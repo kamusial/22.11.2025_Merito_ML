@@ -67,7 +67,15 @@ plt.scatter(X_test, y_test, color='grey', s=20, label='Test', alpha=0.7)
 
 # przewidywanie modeli
 plt.plot(X_plot, linear.predict(X_plot), label="Linear")
+plt.plot(X_plot, poly.predict(X_plot), label=f"Poly deg={degree}")
+plt.plot(X_plot, ridge.predict(X_plot), label=f"Ridge α={alpha}")
+plt.plot(X_plot, lasso.predict(X_plot), label=f"Lasso α={alpha}")
 
+plt.title("Porównanie: Linear, Polynomial, Ridge, Lasso")
+plt.xlabel("X")
+plt.ylabel("y")
+plt.legend()
+plt.grid(True)
 plt.show()
 
 
