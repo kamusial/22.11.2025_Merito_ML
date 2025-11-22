@@ -41,13 +41,13 @@ linear.fit(X_train, y_train)
 evaluate("Linear Regression", linear, X_train, X_test, y_train, y_test)
 
 # regresja wielomianowa
-degree = 9 # wysokie ryzyko przeuczenia
+degree = 15 # wysokie ryzyko przeuczenia
 poly = make_pipeline(PolynomialFeatures(degree, include_bias=False), LinearRegression())
 poly.fit(X_train, y_train)
 evaluate(f"Polynomial deg={degree}", poly, X_train, X_test, y_train, y_test)
 
 # RIDGE i LASSO - regularyzacja L2 i L1
-alpha = 1.0 # siła regularyzacji
+alpha = 100 # siła regularyzacji
 
 ridge = make_pipeline(PolynomialFeatures(degree, include_bias=False), Ridge(alpha=alpha))
 ridge.fit(X_train, y_train)
