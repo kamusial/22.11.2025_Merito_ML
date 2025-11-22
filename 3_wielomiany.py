@@ -1,3 +1,5 @@
+from cProfile import label
+
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression, Ridge, Lasso
@@ -33,4 +35,39 @@ def evaluate(name, model, X_train, X_test, y_train, y_test):
     print(f' MSE train = {mse_train:.2f}, MSE test = {mse_test:.2f}')
     print(f"  R2  train = {r2_train:.2f},  R2  test = {r2_test:.2f}\n")
 
-    re
+# regresja liniowa
+linear = LinearRegression()
+linear.fit(X_train, y_train)
+evaluate("Linear Regression", linear, X_train, X_test, y_train, y_test)
+
+# regresja wielomianowa
+degree = 9 # wysokie ryzyko przeuczenia
+poly = make_pipeline(PolynomialFeatures(degree, include_bias=False), LinearRegression())
+poly.fit(X_train, y_train)
+evaluate(f"Polynomial deg={degree}", poly, X_train, X_test, y_train, y_test)
+
+# RIDGE i LASSO - regularyzacja L2 i L1
+alpha = 1.0 # siła regularyzacji
+
+ridge = make_pipeline(PolynomialFeatures(degree, include_bias=False), Ridge(alpha=alpha))
+ridge.fit(X_train, y_train)
+evaluate(f"Ridge deg={degree}", ridge, X_train, X_test, y_train, y_test)
+
+lasso = make_pipeline(PolynomialFeatures(degree, include_bias=False), Lasso(alpha=alpha, max_iter=5000))
+lasso.fit(X_train, y_train)
+evaluate(f"Lasso deg={degree}", lasso, X_train, X_test, y_train, y_test)
+
+# wykresy - porównanie modeli
+X_plot = np.linspace(-3, 3, 400).reshape(-1, 1)
+plt.figure(figsize=(11, 7))
+
+# dane
+plt.scatter(X_train, y_train, color='black', s=20, label='Train')
+plt.scatter(X_test, y_test, color='grey', s=20, label='Test', alpha=0.7)
+
+# przewidywanie modeli
+plt.plot(X_plot, linear.predict(X_plot), label="Linear")
+
+plt.show()
+
+
